@@ -22,6 +22,7 @@ export default function RegisterUserForm() {
     password: "",
     password_confirm: "",
     is_partner: false,
+    can_process_ussd_transaction: false,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -75,6 +76,7 @@ export default function RegisterUserForm() {
         password: form.password,
         password_confirm: form.password_confirm,
         is_partner: form.is_partner,
+        can_process_ussd_transaction: form.can_process_ussd_transaction,
       }
       const data = await apiFetch(`${baseUrl.replace(/\/$/, "")}/api/auth/register/`, {
         method: "POST",
@@ -102,6 +104,7 @@ export default function RegisterUserForm() {
           password: "",
           password_confirm: "",
           is_partner: false,
+          can_process_ussd_transaction: false,
         })
       }
     } catch (err: any) {
@@ -340,7 +343,7 @@ export default function RegisterUserForm() {
               <span>Type d'utilisateur</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between p-4 bg-accent/30 rounded-lg">
               <div className="space-y-1">
                 <Label htmlFor="is_partner" className="text-sm font-medium text-foreground">
@@ -355,6 +358,23 @@ export default function RegisterUserForm() {
                 name="is_partner"
                 checked={form.is_partner}
                 onCheckedChange={(checked) => setForm({ ...form, is_partner: checked })}
+              />
+            </div>
+            
+            <div className="flex items-center justify-between p-4 bg-accent/30 rounded-lg">
+              <div className="space-y-1">
+                <Label htmlFor="can_process_ussd_transaction" className="text-sm font-medium text-foreground">
+                  Autoriser les transactions USSD
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Permet à cet utilisateur de traiter des transactions USSD
+                </p>
+              </div>
+              <Switch
+                id="can_process_ussd_transaction"
+                name="can_process_ussd_transaction"
+                checked={form.can_process_ussd_transaction}
+                onCheckedChange={(checked) => setForm({ ...form, can_process_ussd_transaction: checked })}
               />
             </div>
           </CardContent>

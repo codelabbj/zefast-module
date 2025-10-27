@@ -64,10 +64,12 @@ export default function UsersPage() {
   const [verifyingEmail, setVerifyingEmail] = useState(false);
   const [verifyingPhone, setVerifyingPhone] = useState(false);
   const [verifyingPartner, setVerifyingPartner] = useState(false);
+  const [verifyingUssd, setVerifyingUssd] = useState(false);
 
   const [confirmEmailToggle, setConfirmEmailToggle] = useState<null | boolean>(null);
   const [confirmPhoneToggle, setConfirmPhoneToggle] = useState<null | boolean>(null);
   const [confirmPartnerToggle, setConfirmPartnerToggle] = useState<null | boolean>(null);
+  const [confirmUssdToggle, setConfirmUssdToggle] = useState<null | boolean>(null);
 
   const [confirmActionUser, setConfirmActionUser] = useState<any | null>(null);
   const [confirmActionType, setConfirmActionType] = useState<"activate" | "deactivate" | null>(null);
@@ -348,6 +350,32 @@ export default function UsersPage() {
     }
   };
 
+  // Add handler for toggling can_process_ussd_transaction
+  const handleToggleUssdTransaction = async (canProcess: boolean) => {
+    if (!detailUser?.uid) return;
+    setVerifyingUssd(true);
+    try {
+      const data = await apiFetch(`${baseUrl.replace(/\/$/, "")}/api/auth/admin/users/${detailUser.uid}/update/`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ can_process_ussd_transaction: canProcess }),
+      });
+      setDetailUser((prev: any) => prev ? { ...prev, can_process_ussd_transaction: canProcess } : prev);
+      toast({ 
+        title: "Statut USSD modifié", 
+        description: canProcess ? "Transaction USSD activée avec succès" : "Transaction USSD désactivée avec succès" 
+      });
+    } catch (err: any) {
+      toast({ 
+        title: "Échec de la modification du statut USSD", 
+        description: extractErrorMessages(err), 
+        variant: "destructive" 
+      });
+    } finally {
+      setVerifyingUssd(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -484,7 +512,7 @@ export default function UsersPage() {
                       />
                     </TableHead>
                     <TableHead className="font-semibold">Utilisateur</TableHead>
-                    <TableHead className="font-semibold">Email</TableHead>
+                    <TableHead className="font-semibold">Contact</TableHead>
                     <TableHead className="font-semibold">Statut</TableHead>
                     <TableHead className="font-semibold">Vérification</TableHead>
                     <TableHead className="font-semibold">Créé le</TableHead>
@@ -524,8 +552,17 @@ export default function UsersPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-sm text-foreground">
-                          {user.email}
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-sm text-foreground">
+                            <Mail className="h-3 w-3 text-muted-foreground" />
+                            <span>{user.email}</span>
+                          </div>
+                          {user.phone && (
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Phone className="h-3 w-3" />
+                              <span>{user.phone}</span>
+                            </div>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -690,14 +727,28 @@ export default function UsersPage() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-muted-foreground">Nom</Label>
                   <span className="text-sm">{detailUser.display_name || `${detailUser.first_name || ""} ${detailUser.last_name || ""}`}</span>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-muted-foreground">Email</Label>
-                  <span className="text-sm">{detailUser.email}</span>
+                <div className="space-y-3">
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      Email
+                    </Label>
+                    <span className="text-sm">{detailUser.email}</span>
+                  </div>
+                  {detailUser.phone && (
+                    <div>
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <Phone className="h-4 w-4" />
+                        Téléphone
+                      </Label>
+                      <span className="text-sm">{detailUser.phone}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -735,6 +786,18 @@ export default function UsersPage() {
                     checked={detailUser.is_partner}
                     disabled={detailLoading || verifyingPartner}
                     onCheckedChange={() => setConfirmPartnerToggle(!detailUser.is_partner)}
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label className="text-sm font-medium text-muted-foreground">Transaction USSD</Label>
+                    <p className="text-xs text-muted-foreground">Autoriser les transactions USSD</p>
+                  </div>
+                  <Switch
+                    checked={detailUser.can_process_ussd_transaction}
+                    disabled={detailLoading || verifyingUssd}
+                    onCheckedChange={() => setConfirmUssdToggle(!detailUser.can_process_ussd_transaction)}
                   />
                 </div>
               </div>
@@ -852,6 +915,41 @@ export default function UsersPage() {
               className="w-full mt-2"
               onClick={() => setConfirmPartnerToggle(null)}
               disabled={verifyingPartner}
+            >
+              Annuler
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={confirmUssdToggle !== null} onOpenChange={(open) => { if (!open) setConfirmUssdToggle(null) }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {confirmUssdToggle ? "Activer la transaction USSD" : "Désactiver la transaction USSD"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4 text-center">
+            {confirmUssdToggle
+              ? "Êtes-vous sûr de vouloir activer les transactions USSD pour cet utilisateur ?"
+              : "Êtes-vous sûr de vouloir désactiver les transactions USSD pour cet utilisateur ?"}
+          </div>
+          <DialogFooter>
+            <Button
+              className="w-full"
+              onClick={async () => {
+                await handleToggleUssdTransaction(!!confirmUssdToggle);
+                setConfirmUssdToggle(null);
+              }}
+              disabled={verifyingUssd}
+            >
+              {verifyingUssd ? "Vérification..." : "Confirmer"}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full mt-2"
+              onClick={() => setConfirmUssdToggle(null)}
+              disabled={verifyingUssd}
             >
               Annuler
             </Button>

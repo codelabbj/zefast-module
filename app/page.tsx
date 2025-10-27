@@ -26,7 +26,7 @@ export default function SignInPage() {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center space-y-4">
           <div className="relative">
-            <img src="/logo.png" alt="Pal Module Logo" className="h-16 w-16 animate-pulse" />
+            {/* <img src="/logo.png" alt="Pal Module Logo" className="h-16 w-16 animate-pulse" /> */}
             <div className="absolute -top-1 -right-1">
               <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center animate-pulse">
                 <Loader2 className="h-3 w-3 text-white animate-spin" />

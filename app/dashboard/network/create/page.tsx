@@ -36,6 +36,7 @@ export default function NetworkCreatePage() {
   const [sentDepositToModule, setSentDepositToModule] = useState(false)
   const [sentWithdrawalToModule, setSentWithdrawalToModule] = useState(false)
   const [countries, setCountries] = useState<any[]>([])
+  const [loadingCountries, setLoadingCountries] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter()
@@ -43,27 +44,30 @@ export default function NetworkCreatePage() {
   const { t } = useLanguage()
   const { toast } = useToast();
 
-  // Mock countries for demonstration
-  const mockCountries = [
-    { id: 1, nom: "Cameroun" },
-    { id: 2, nom: "Nigeria" },
-    { id: 3, nom: "Ghana" },
-    { id: 4, nom: "Côte d'Ivoire" },
-    { id: 5, nom: "Sénégal" }
-  ]
-
   useEffect(() => {
     const fetchCountries = async () => {
+      setLoadingCountries(true)
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500))
-        setCountries(mockCountries)
+        const data = await apiFetch(`${baseUrl.replace(/\/$/, "")}/api/payments/countries/`)
+        // Ensure countries is always an array
+        const countriesArray = Array.isArray(data) 
+          ? data 
+          : (Array.isArray(data?.results) ? data.results : [])
+        setCountries(countriesArray)
       } catch (err: any) {
+        console.error("Error fetching countries:", err)
         setCountries([])
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger les pays",
+          variant: "destructive",
+        })
+      } finally {
+        setLoadingCountries(false)
       }
     }
     fetchCountries()
-  }, [])
+  }, [apiFetch, toast])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -195,16 +199,24 @@ export default function NetworkCreatePage() {
                 <Label htmlFor="country" className="text-sm font-medium text-foreground">
                   Pays *
                 </Label>
-                <Select value={country} onValueChange={setCountry}>
+                <Select value={country} onValueChange={setCountry} disabled={loadingCountries}>
                   <SelectTrigger className="minimal-input">
-                    <SelectValue placeholder="Sélectionner le pays" />
+                    <SelectValue placeholder={loadingCountries ? "Chargement..." : "Sélectionner le pays"} />
                   </SelectTrigger>
                   <SelectContent className="minimal-card">
-                    {countries.map((country) => (
-                      <SelectItem key={country.id} value={country.id.toString()}>
-                        {country.nom}
-                      </SelectItem>
-                    ))}
+                    {Array.isArray(countries) && countries.length > 0 ? (
+                      countries.map((country) => (
+                        <SelectItem key={country.id || country.uid} value={(country.id || country.uid).toString()}>
+                          {country.nom}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      !loadingCountries && (
+                        <SelectItem value="no-data" disabled>
+                          Aucun pays disponible
+                        </SelectItem>
+                      )
+                    )}
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
@@ -313,7 +325,7 @@ export default function NetworkCreatePage() {
                     {nom || "Nom du réseau"}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Code: {code || "CODE"} • Pays: {countries.find(c => c.id.toString() === country)?.nom || "Non sélectionné"}
+                    Code: {code || "CODE"} • Pays: {Array.isArray(countries) && countries.find(c => (c.id || c.uid)?.toString() === country)?.nom || "Non sélectionné"}
                   </p>
                   {ussdBaseCode && (
                     <p className="text-xs text-muted-foreground font-mono">
@@ -357,7 +369,7 @@ export default function NetworkCreatePage() {
           </Button>
           <Button 
             type="submit" 
-            disabled={loading || !nom || !code || !country}
+            disabled={loading || loadingCountries || !nom || !code || !country}
             className="min-w-[140px] hover-lift"
           >
             {loading ? (

@@ -78,7 +78,7 @@ export default function ProfilePage() {
   useEffect(() => {
     // Redirect if not logged in (no token)
     if (!token) {
-      router.push("/login");
+      router.push("/");
       return;
     }
     const fetchProfile = async () => {
