@@ -18,8 +18,7 @@ import {
   Clock, 
   Phone,
   Download,
-  RefreshCw,
-  Eye
+  RefreshCw
 } from "lucide-react"
 import { useApi } from "@/lib/useApi"
 import { useLanguage } from "@/components/providers/language-provider"
@@ -387,8 +386,8 @@ export default function SmsLogsListPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="max-w-xs">
-                          <p className="text-sm text-foreground truncate">
+                        <div className="max-w-2xl">
+                          <p className="text-sm text-foreground whitespace-pre-wrap break-words">
                             {log.message || log.content || log.text || "N/A"}
                           </p>
                         </div>
@@ -423,9 +422,9 @@ export default function SmsLogsListPage() {
                           >
                             <Copy className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          {/* <Button variant="ghost" size="sm">
                             <Eye className="h-4 w-4" />
-                          </Button>
+                          </Button> */}
                         </div>
                       </TableCell>
                     </TableRow>

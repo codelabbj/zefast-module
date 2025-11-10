@@ -116,12 +116,12 @@ export function Sidebar() {
       icon: DollarSign,
       current: pathname === "/dashboard/topup",
     },
-    // {
-    //   name: t("earning.title"),
-    //   href: "/dashboard/earning-management",
-    //   icon: BarChart3,
-    //   current: pathname === "/dashboard/earning-management",
-    // },
+    {
+      name: t("earning.title"),
+      href: "/dashboard/earning-management",
+      icon: BarChart3,
+      current: pathname === "/dashboard/earning-management",
+    },
     {
       name: t("Wave Business Transaction"),
       href: "/dashboard/wave-business-transaction",

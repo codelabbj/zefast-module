@@ -317,13 +317,13 @@ export default function FcmLogsListPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="max-w-xs">
-                          <div className="text-sm text-foreground truncate">
+                        <div className="max-w-2xl">
+                          <div className="text-sm text-foreground whitespace-pre-wrap break-words">
                             {log.message || log.title || log.body || log.content || 'Aucun message'}
                           </div>
                           {log.data && (
-                            <div className="text-xs text-muted-foreground mt-1">
-                              Données: {JSON.stringify(log.data).substring(0, 50)}...
+                            <div className="text-xs text-muted-foreground mt-1 whitespace-pre-wrap break-words">
+                              Données: {JSON.stringify(log.data, null, 2)}
                             </div>
                           )}
                         </div>
