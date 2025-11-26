@@ -375,16 +375,27 @@ export default function SmsLogsListPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredLogs.map((log, index) => (
-                    <TableRow key={log.id || index} className="hover:bg-accent/50">
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-mono text-sm text-foreground">
-                            {log.phone_number || log.phone || log.recipient || "N/A"}
-                          </span>
-                        </div>
-                      </TableCell>
+                  {filteredLogs.map((log, index) => {
+                    const phoneNumber = log.phone_number || log.phone || log.recipient || "N/A"
+                    const senderValue = log.sender || log.from || log.originator || log.sender_name || ""
+
+                    return (
+                      <TableRow key={log.id || index} className="hover:bg-accent/50">
+                        <TableCell>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <Phone className="h-4 w-4 text-muted-foreground" />
+                              <span className="font-mono text-sm text-foreground">
+                                {phoneNumber}
+                              </span>
+                            </div>
+                            {senderValue && (
+                              <p className="text-xs text-muted-foreground">
+                                Expéditeur&nbsp;: <span className="font-medium text-foreground">{senderValue}</span>
+                              </p>
+                            )}
+                          </div>
+                        </TableCell>
                       <TableCell>
                         <div className="max-w-2xl">
                           <p className="text-sm text-foreground whitespace-pre-wrap break-words">
@@ -427,8 +438,9 @@ export default function SmsLogsListPage() {
                           </Button> */}
                         </div>
                       </TableCell>
-                    </TableRow>
-                  ))}
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             </div>
