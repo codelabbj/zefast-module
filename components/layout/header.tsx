@@ -39,40 +39,22 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-      <div className="container-minimal flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+      <div className="container-minimal flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-4 sm:gap-6 min-w-0 flex-1">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
               <span className="text-primary-foreground font-bold text-sm">BP</span>
             </div>
-            <div>
-              <h1 className="text-lg font-semibold text-foreground tracking-tight">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-lg font-semibold text-foreground tracking-tight truncate">
                 {t(pageTitle)}
               </h1>
-              <p className="text-xs text-muted-foreground">Admin Dashboard</p>
+              <p className="text-xs text-muted-foreground hidden sm:block">Admin Dashboard</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Search */}
-          {/* <div className="hidden md:flex relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              className="pl-10 w-64 bg-secondary/50 border-0 focus-visible:ring-0"
-              variant="minimal"
-            />
-          </div> */}
-
-          {/* Notifications */}
-          {/* <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-4 w-4" />
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-              3
-            </span>
-          </Button> */}
-
+        <div className="flex items-center gap-1 sm:gap-3">
           {/* Theme Toggle */}
           <ThemeToggle />
 
@@ -82,14 +64,14 @@ export function Header() {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2 px-2">
-                <Avatar className="h-8 w-8">
+              <Button variant="ghost" className="flex items-center gap-2 px-2 h-10 touch-manipulation">
+                <Avatar className="h-8 w-8 shrink-0">
                   <AvatarImage src="/placeholder-user.jpg" alt="User" />
                   <AvatarFallback className="bg-primary text-primary-foreground font-medium text-sm">
                     JD
                   </AvatarFallback>
                 </Avatar>
-                <div className="hidden md:block text-left">
+                <div className="hidden md:block text-left min-w-0">
                   {/* <p className="text-sm font-medium">John Doe</p> */}
                   <p className="text-xs text-muted-foreground">Admin</p>
                 </div>

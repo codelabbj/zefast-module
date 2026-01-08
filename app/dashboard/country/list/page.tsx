@@ -9,13 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Link from "next/link"
 import { useApi } from "@/lib/useApi"
 import { useLanguage } from "@/components/providers/language-provider"
-import { 
-  Search, 
-  ArrowUpDown, 
-  Globe, 
-  Plus, 
-  Filter, 
-  CheckCircle, 
+import {
+  Search,
+  ArrowUpDown,
+  Globe,
+  Plus,
+  Filter,
+  CheckCircle,
   XCircle,
   Pencil,
   Download,
@@ -78,7 +78,7 @@ export default function CountryListPage() {
     }
 
     if (statusFilter !== "all") {
-      filtered = filtered.filter(country => 
+      filtered = filtered.filter(country =>
         statusFilter === "active" ? country.is_active : !country.is_active
       )
     }
@@ -119,37 +119,38 @@ export default function CountryListPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Pays
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Gérer les pays disponibles sur la plateforme
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
-            <Globe className="h-4 w-4 text-primary" />
+            <Globe className="h-4 w-4 text-primary shrink-0" />
             <span className="text-sm font-medium text-foreground">
               {filteredCountries.length} pays
             </span>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <Download className="h-4 w-4 mr-2" />
             Exporter
           </Button>
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="touch-manipulation">
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </Button>
           <Link href="/dashboard/country/create">
-            <Button size="sm">
+            <Button size="sm" className="touch-manipulation">
               <Plus className="h-4 w-4 mr-2" />
-              Ajouter un pays
+              <span className="hidden sm:inline">Ajouter un pays</span>
+              <span className="sm:hidden">Ajouter</span>
             </Button>
           </Link>
         </div>
@@ -157,8 +158,8 @@ export default function CountryListPage() {
 
       {/* Filters */}
       <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -166,14 +167,14 @@ export default function CountryListPage() {
                 placeholder="Rechercher un pays..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-10"
                 variant="minimal"
               />
             </div>
 
             {/* Status Filter */}
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Filtrer par statut" />
               </SelectTrigger>
               <SelectContent>
@@ -195,35 +196,36 @@ export default function CountryListPage() {
       </Card>
 
       {/* Countries Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <Card className="overflow-hidden">
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <Globe className="h-5 w-5 text-primary" />
             Liste des pays
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 px-4">
               <div className="flex flex-col items-center space-y-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="text-muted-foreground">Chargement des pays...</span>
+                <span className="text-muted-foreground text-center">Chargement des pays...</span>
               </div>
             </div>
           ) : error ? (
-            <div className="p-6 text-center">
+            <div className="p-4 sm:p-6 text-center">
               <ErrorDisplay error={error} />
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="font-semibold">Pays</TableHead>
-                    <TableHead className="font-semibold">Code</TableHead>
-                    <TableHead className="font-semibold">Statut</TableHead>
-                    <TableHead className="font-semibold text-right">Actions</TableHead>
-                  </TableRow>
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="min-w-[600px]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="font-semibold min-w-[150px]">Pays</TableHead>
+                      <TableHead className="font-semibold min-w-[100px]">Code</TableHead>
+                      <TableHead className="font-semibold min-w-[100px]">Statut</TableHead>
+                      <TableHead className="font-semibold text-right min-w-[120px]">Actions</TableHead>
+                    </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredCountries.map((country) => (
@@ -266,8 +268,9 @@ export default function CountryListPage() {
                       </TableCell>
                     </TableRow>
                   ))}
-                </TableBody>
-              </Table>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           )}
         </CardContent>

@@ -196,28 +196,28 @@ export default function TopupPage() {
 	}
 
 	return (
-		<div className="space-y-8">
+		<div className="space-y-6 sm:space-y-8">
 			{/* Header */}
-			<div className="flex items-center justify-between">
+			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 				<div className="space-y-1">
-					<h1 className="text-3xl font-bold text-foreground tracking-tight">
+					<h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
 						{t("topup.title") || "Demandes de recharge"}
 					</h1>
-					<p className="text-muted-foreground">
+					<p className="text-sm sm:text-base text-muted-foreground">
 						Gérer et examiner les demandes de recharge des utilisateurs
 					</p>
 				</div>
-				
-				<div className="flex items-center gap-3">
+
+				<div className="flex flex-wrap items-center gap-2 sm:gap-3">
 					<div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
-						<DollarSign className="h-4 w-4 text-primary" />
+						<DollarSign className="h-4 w-4 text-primary shrink-0" />
 						<span className="text-sm font-medium text-foreground">
 							{totalCount} demandes
 						</span>
 					</div>
-					<Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
+					<Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="touch-manipulation">
 						<RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-						Actualiser
+						<span className="hidden sm:inline">Actualiser</span>
 					</Button>
 				</div>
 			</div>
@@ -307,18 +307,18 @@ export default function TopupPage() {
 				</CardHeader>
 				<CardContent>
 					{/* Search & Filter */}
-					<div className="flex flex-col sm:flex-row gap-4 mb-6 items-center">
-						<div className="relative flex-1">
+					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6 items-center">
+						<div className="relative flex-1 w-full sm:w-auto">
 							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
 							<Input
 								placeholder={t("topup.search") || "Rechercher"}
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className="pl-10"
+								className="pl-10 h-10"
 							/>
 						</div>
 						<Select value={statusFilter} onValueChange={setStatusFilter}>
-							<SelectTrigger className="w-full sm:w-48">
+							<SelectTrigger className="w-full sm:w-48 h-10">
 								<SelectValue placeholder={t("topup.allStatuses") || "Tous les statuts"} />
 							</SelectTrigger>
 							<SelectContent>
@@ -332,27 +332,28 @@ export default function TopupPage() {
 					</div>
 
 					{/* Table */}
-					<div className="overflow-x-auto">
-						<Table>
+					<div className="overflow-x-auto scrollbar-hide">
+						<div className="min-w-[800px]">
+							<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead className="font-semibold">{t("topup.uid") || "UID"}</TableHead>
-									<TableHead>
+									<TableHead className="font-semibold min-w-[100px]">{t("topup.uid") || "UID"}</TableHead>
+									<TableHead className="min-w-[120px]">
 										<Button variant="ghost" onClick={() => handleSort("amount")} className="h-auto p-0 font-semibold hover:bg-transparent">
 											{t("topup.amount") || "Montant"}
 											<ArrowUpDown className="ml-2 h-4 w-4" />
 										</Button>
 									</TableHead>
-									<TableHead>{t("topup.formattedAmount") || "Montant formaté"}</TableHead>
-									<TableHead>
+									<TableHead className="min-w-[140px]">{t("topup.formattedAmount") || "Montant formaté"}</TableHead>
+									<TableHead className="min-w-[100px]">
 										<Button variant="ghost" onClick={() => handleSort("status")} className="h-auto p-0 font-semibold hover:bg-transparent">
 											{t("topup.status") || "Statut"}
 											<ArrowUpDown className="ml-2 h-4 w-4" />
 										</Button>
 									</TableHead>
-									<TableHead>{t("topup.userName") || "Nom d'utilisateur"}</TableHead>
-									<TableHead>{t("topup.userEmail") || "Email utilisateur"}</TableHead>
-									<TableHead>{t("topup.reference") || "Référence"}</TableHead>
+									<TableHead className="min-w-[120px]">{t("topup.userName") || "Nom d'utilisateur"}</TableHead>
+									<TableHead className="min-w-[150px]">{t("topup.userEmail") || "Email utilisateur"}</TableHead>
+									<TableHead className="min-w-[120px]">{t("topup.reference") || "Référence"}</TableHead>
 									<TableHead>
 										<Button variant="ghost" onClick={() => handleSort("created_at")} className="h-auto p-0 font-semibold hover:bg-transparent">
 											{t("topup.createdAt") || "Créé le"}
@@ -434,6 +435,7 @@ export default function TopupPage() {
 							</TableBody>
 							</Table>
 						</div>
+					</div>
 
 					{/* Pagination */}
 					<div className="flex items-center justify-between mt-6">

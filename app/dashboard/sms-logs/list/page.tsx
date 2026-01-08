@@ -35,7 +35,7 @@ interface PaginationInfo {
   results: any[]
 }
 
-export default function SmsLogsListPage() {
+export default function SmsLogsListPage(): JSX.Element {
   const [paginationData, setPaginationData] = useState<PaginationInfo>({
     count: 0,
     next: null,
@@ -232,36 +232,36 @@ export default function SmsLogsListPage() {
 
   const copyToClipboard = async (text: string, id: string) => {
     try {
-      await navigator.clipboard.writeText(text)
-      setCopied(id)
+      await navigator.clipboard.writeText(text);
+      setCopied(id);
       toast({
         title: "Copié!",
         description: "Le texte a été copié dans le presse-papiers",
-      })
-      setTimeout(() => setCopied(null), 2000)
+      });
+      setTimeout(() => setCopied(null), 2000);
     } catch (err) {
       toast({
         title: "Erreur",
         description: "Impossible de copier le texte",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Logs SMS
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Surveiller et analyser les messages SMS envoyés
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
             <MessageSquare className="h-4 w-4 text-primary" />
             <span className="text-sm font-medium text-foreground">
@@ -274,21 +274,21 @@ export default function SmsLogsListPage() {
               {filteredLogs.filter(log => log.status === 'delivered').length} livrés
             </span>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <Download className="h-4 w-4 mr-2" />
             Exporter
           </Button>
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="touch-manipulation">
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </Button>
         </div>
       </div>
 
       {/* Filters */}
       <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -296,14 +296,14 @@ export default function SmsLogsListPage() {
                 placeholder="Rechercher un SMS..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-10"
                 variant="minimal"
               />
             </div>
 
             {/* Type Filter */}
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Filtrer par type" />
               </SelectTrigger>
               <SelectContent>
@@ -317,7 +317,7 @@ export default function SmsLogsListPage() {
 
             {/* Status Filter */}
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Filtrer par statut" />
               </SelectTrigger>
               <SelectContent>
@@ -331,9 +331,10 @@ export default function SmsLogsListPage() {
 
             {/* Quick Actions */}
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto h-10">
                 <Filter className="h-4 w-4 mr-2" />
-                Filtres avancés
+                <span className="hidden sm:inline">Filtres avancés</span>
+                <span className="sm:hidden">Filtres</span>
               </Button>
             </div>
           </div>
@@ -341,108 +342,107 @@ export default function SmsLogsListPage() {
       </Card>
 
       {/* SMS Logs Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <Card className="overflow-hidden">
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <MessageSquare className="h-5 w-5 text-primary" />
             Liste des logs SMS
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 px-4">
               <div className="flex flex-col items-center space-y-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="text-muted-foreground">Chargement des logs SMS...</span>
+                <span className="text-muted-foreground text-center">Chargement des logs SMS...</span>
               </div>
             </div>
           ) : error ? (
-            <div className="p-6 text-center">
+            <div className="p-4 sm:p-6 text-center">
               <ErrorDisplay error={error} />
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="font-semibold">Numéro</TableHead>
-                    <TableHead className="font-semibold">Message</TableHead>
-                    <TableHead className="font-semibold">Type</TableHead>
-                    <TableHead className="font-semibold">Statut</TableHead>
-                    <TableHead className="font-semibold">Coût</TableHead>
-                    <TableHead className="font-semibold">Date</TableHead>
-                    <TableHead className="font-semibold text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredLogs.map((log, index) => {
-                    const phoneNumber = log.phone_number || log.phone || log.recipient || "N/A"
-                    const senderValue = log.sender || log.from || log.originator || log.sender_name || ""
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="min-w-[800px]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="font-semibold min-w-[120px]">Numéro</TableHead>
+                      <TableHead className="font-semibold min-w-[200px]">Message</TableHead>
+                      <TableHead className="font-semibold min-w-[100px]">Type</TableHead>
+                      <TableHead className="font-semibold min-w-[100px]">Statut</TableHead>
+                      <TableHead className="font-semibold min-w-[80px]">Coût</TableHead>
+                      <TableHead className="font-semibold min-w-[120px]">Date</TableHead>
+                      <TableHead className="font-semibold text-right min-w-[80px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredLogs.map((log, index) => {
+                      const phoneNumber = log.phone_number || log.phone || log.recipient || "N/A";
+                      const senderValue = log.sender || log.from || log.originator || log.sender_name || "";
 
-                    return (
-                      <TableRow key={log.id || index} className="hover:bg-accent/50">
-                        <TableCell>
-                          <div className="space-y-1">
+                      return (
+                        <TableRow key={log.id || index} className="hover:bg-accent/50">
+                          <TableCell>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <Phone className="h-4 w-4 text-muted-foreground" />
+                                <span className="font-mono text-sm text-foreground">
+                                  {phoneNumber}
+                                </span>
+                              </div>
+                              {senderValue && (
+                                <p className="text-xs text-muted-foreground">
+                                  Expéditeur&nbsp;: <span className="font-medium text-foreground">{senderValue}</span>
+                                </p>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="max-w-xs sm:max-w-2xl">
+                              <p className="text-sm text-foreground whitespace-pre-wrap break-words line-clamp-2">
+                                {log.message || log.content || log.text || "N/A"}
+                              </p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {getTypeBadge(log.type || log.message_type || "unknown")}
+                          </TableCell>
+                          <TableCell>
+                            {getStatusBadge(log.status || log.delivery_status || "unknown")}
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm font-medium text-foreground">
+                              {log.cost ? `€${log.cost.toFixed(2)}` : log.price ? `€${log.price.toFixed(2)}` : "N/A"}
+                            </span>
+                          </TableCell>
+                          <TableCell>
                             <div className="flex items-center gap-2">
-                              <Phone className="h-4 w-4 text-muted-foreground" />
-                              <span className="font-mono text-sm text-foreground">
-                                {phoneNumber}
+                              <Clock className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">
+                                {log.created_at ? new Date(log.created_at).toLocaleString() :
+                                 log.timestamp ? new Date(log.timestamp).toLocaleString() :
+                                 log.date ? new Date(log.date).toLocaleString() : "N/A"}
                               </span>
                             </div>
-                            {senderValue && (
-                              <p className="text-xs text-muted-foreground">
-                                Expéditeur&nbsp;: <span className="font-medium text-foreground">{senderValue}</span>
-                              </p>
-                            )}
-                          </div>
-                        </TableCell>
-                      <TableCell>
-                        <div className="max-w-2xl">
-                          <p className="text-sm text-foreground whitespace-pre-wrap break-words">
-                            {log.message || log.content || log.text || "N/A"}
-                          </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {getTypeBadge(log.type || log.message_type || "unknown")}
-                      </TableCell>
-                      <TableCell>
-                        {getStatusBadge(log.status || log.delivery_status || "unknown")}
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm font-medium text-foreground">
-                          {log.cost ? `€${log.cost.toFixed(2)}` : log.price ? `€${log.price.toFixed(2)}` : "N/A"}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground">
-                            {log.created_at ? new Date(log.created_at).toLocaleString() : 
-                             log.timestamp ? new Date(log.timestamp).toLocaleString() : 
-                             log.date ? new Date(log.date).toLocaleString() : "N/A"}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => copyToClipboard(log.message || log.content || log.text || "", (log.id || index).toString())}
-                          >
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                          {/* <Button variant="ghost" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button> */}
-                        </div>
-                      </TableCell>
-                      </TableRow>
-                    )
-                  })}
-                </TableBody>
-              </Table>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => copyToClipboard(log.message || log.content || log.text || "", (log.id || index).toString())}
+                              >
+                                <Copy className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           )}
         </CardContent>
@@ -450,19 +450,29 @@ export default function SmsLogsListPage() {
 
       {/* Pagination */}
       {paginationData.count > 10 && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-muted-foreground text-center sm:text-left">
             Affichage de {((currentPage - 1) * 10) + 1} à {Math.min(currentPage * 10, paginationData.count)} sur {paginationData.count} résultats
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
+              className="hidden sm:flex"
             >
               <ChevronLeft className="h-4 w-4" />
               Précédent
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className="sm:hidden"
+            >
+              <ChevronLeft className="h-4 w-4" />
             </Button>
             <div className="flex items-center gap-1">
               {Array.from({ length: Math.min(5, Math.ceil(paginationData.count / 10)) }, (_, i) => {
@@ -473,6 +483,7 @@ export default function SmsLogsListPage() {
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCurrentPage(page)}
+                    className="min-w-[40px] h-10"
                   >
                     {page}
                   </Button>
@@ -484,8 +495,18 @@ export default function SmsLogsListPage() {
               size="sm"
               onClick={() => setCurrentPage(Math.min(Math.ceil(paginationData.count / 10), currentPage + 1))}
               disabled={currentPage === Math.ceil(paginationData.count / 10)}
+              className="hidden sm:flex"
             >
               Suivant
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.min(Math.ceil(paginationData.count / 10), currentPage + 1))}
+              disabled={currentPage === Math.ceil(paginationData.count / 10)}
+              className="sm:hidden"
+            >
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

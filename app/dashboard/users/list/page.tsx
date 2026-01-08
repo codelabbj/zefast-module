@@ -377,40 +377,40 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             {t("users.title") || "Utilisateurs"}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Gérer et surveiller les comptes utilisateurs
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
-            <Users className="h-4 w-4 text-primary" />
+            <Users className="h-4 w-4 text-primary shrink-0" />
             <span className="text-sm font-medium text-foreground">
               {totalCount.toLocaleString()} utilisateurs
             </span>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <Download className="h-4 w-4 mr-2" />
             Exporter
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="touch-manipulation">
             <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </Button>
         </div>
       </div>
 
       {/* Filters */}
       <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -418,14 +418,14 @@ export default function UsersPage() {
                 placeholder="Rechercher des utilisateurs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-10"
                 variant="minimal"
               />
             </div>
 
             {/* Status Filter */}
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Filtrer par statut" />
               </SelectTrigger>
               <SelectContent>
@@ -438,7 +438,7 @@ export default function UsersPage() {
 
             {/* View Type */}
             <Select value={viewType} onValueChange={setViewType}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Type de vue" />
               </SelectTrigger>
               <SelectContent>
@@ -475,16 +475,16 @@ export default function UsersPage() {
       </Card>
 
       {/* Users Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <Card className="overflow-hidden">
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <Users className="h-5 w-5 text-primary" />
             Liste des utilisateurs
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 px-4">
               <div className="flex flex-col items-center space-y-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 <span className="text-muted-foreground">Chargement des utilisateurs...</span>
@@ -495,8 +495,9 @@ export default function UsersPage() {
               <ErrorDisplay error={error} onRetry={() => {/* retry function */}} />
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="min-w-[900px]">
+                <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-12">
@@ -511,12 +512,12 @@ export default function UsersPage() {
                         }}
                       />
                     </TableHead>
-                    <TableHead className="font-semibold">Utilisateur</TableHead>
-                    <TableHead className="font-semibold">Contact</TableHead>
-                    <TableHead className="font-semibold">Statut</TableHead>
-                    <TableHead className="font-semibold">Vérification</TableHead>
-                    <TableHead className="font-semibold">Créé le</TableHead>
-                    <TableHead className="font-semibold text-right">Actions</TableHead>
+                    <TableHead className="font-semibold min-w-[150px]">Utilisateur</TableHead>
+                    <TableHead className="font-semibold min-w-[180px]">Contact</TableHead>
+                    <TableHead className="font-semibold min-w-[100px]">Statut</TableHead>
+                    <TableHead className="font-semibold min-w-[140px]">Vérification</TableHead>
+                    <TableHead className="font-semibold min-w-[120px]">Créé le</TableHead>
+                    <TableHead className="font-semibold text-right min-w-[100px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -636,25 +637,36 @@ export default function UsersPage() {
                 </TableBody>
               </Table>
             </div>
+          </div>
           )}
         </CardContent>
       </Card>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-sm text-muted-foreground text-center sm:text-left">
             Affichage de {((currentPage - 1) * itemsPerPage) + 1} à {Math.min(currentPage * itemsPerPage, totalCount)} sur {totalCount} résultats
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
+              className="hidden sm:flex"
             >
               <ChevronLeft className="h-4 w-4" />
               Précédent
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className="sm:hidden"
+            >
+              <ChevronLeft className="h-4 w-4" />
             </Button>
             <div className="flex items-center gap-1">
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -665,6 +677,7 @@ export default function UsersPage() {
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCurrentPage(page)}
+                    className="min-w-[40px] h-10"
                   >
                     {page}
                   </Button>
@@ -676,8 +689,18 @@ export default function UsersPage() {
               size="sm"
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
+              className="hidden sm:flex"
             >
               Suivant
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+              disabled={currentPage === totalPages}
+              className="sm:hidden"
+            >
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

@@ -214,14 +214,14 @@ export default function MomoPayPage() {
   const pendingAmount = transactions.filter(t => t.status === 'pending').reduce((sum, t) => sum + parseFloat(t.amount || '0'), 0)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             MoMo Pay Transactions
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Surveiller et gérer les transactions MoMo Pay
           </p>
         </div>

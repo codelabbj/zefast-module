@@ -139,37 +139,38 @@ export default function NetworkListPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Réseaux
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Gérer les réseaux de télécommunication disponibles
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
-            <Share2 className="h-4 w-4 text-primary" />
+            <Share2 className="h-4 w-4 text-primary shrink-0" />
             <span className="text-sm font-medium text-foreground">
               {filteredNetworks.length} réseaux
             </span>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <Download className="h-4 w-4 mr-2" />
             Exporter
           </Button>
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="touch-manipulation">
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </Button>
           <Link href="/dashboard/network/create">
-            <Button size="sm">
+            <Button size="sm" className="touch-manipulation">
               <Plus className="h-4 w-4 mr-2" />
-              Ajouter un réseau
+              <span className="hidden sm:inline">Ajouter un réseau</span>
+              <span className="sm:hidden">Ajouter</span>
             </Button>
           </Link>
         </div>

@@ -184,41 +184,42 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gradient">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gradient">
             Mon profil
           </h1>
-          <p className="text-muted-foreground mt-2 text-lg">
+          <p className="text-muted-foreground mt-2 text-sm sm:text-base lg:text-lg">
             Gérez vos informations de compte et paramètres
           </p>
         </div>
         {!editing ? (
-          <Button 
-            onClick={() => setEditing(true)} 
+          <Button
+            onClick={() => setEditing(true)}
             variant="outline"
-            className="flex items-center gap-2 hover-lift"
+            className="flex items-center gap-2 hover-lift w-full sm:w-auto touch-manipulation"
           >
             <Edit className="h-4 w-4" />
-            Modifier le profil
+            <span className="hidden sm:inline">Modifier le profil</span>
+            <span className="sm:hidden">Modifier</span>
           </Button>
         ) : (
-          <div className="flex gap-2">
-            <Button 
-              onClick={() => setEditing(false)} 
-              variant="outline" 
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button
+              onClick={() => setEditing(false)}
+              variant="outline"
               disabled={loading}
-              className="flex items-center gap-2 hover-lift"
+              className="flex items-center gap-2 hover-lift touch-manipulation"
             >
               <X className="h-4 w-4" />
               Annuler
             </Button>
-            <Button 
-              onClick={handleSubmit} 
+            <Button
+              onClick={handleSubmit}
               disabled={loading}
-              className="hover-lift"
+              className="hover-lift touch-manipulation"
             >
               {loading ? (
                 <>

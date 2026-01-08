@@ -23,7 +23,7 @@ export default function DashboardLayout({
         <div className="lg:pl-72">
           <Header />
           <main className="min-h-screen">
-            <div className="container-minimal py-8">
+            <div className="container-minimal py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
               <div className="animate-fade-in">
                 {children}
               </div>

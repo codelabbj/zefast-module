@@ -505,104 +505,104 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Aperçu du Tableau de Bord
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Aperçus en temps réel des performances de votre plateforme de paiement.
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <div className="flex items-center gap-2">
-            <Eye className="h-4 w-4 text-muted-foreground" />
+            <Eye className="h-4 w-4 text-muted-foreground shrink-0" />
             <span className="text-sm text-muted-foreground">Afficher seulement les utilisateurs actifs</span>
-            <Switch 
-              checked={showOnlyActiveUsers} 
+            <Switch
+              checked={showOnlyActiveUsers}
               onCheckedChange={setShowOnlyActiveUsers}
             />
           </div>
-          <Button variant="outline" size="sm" onClick={refreshData}>
+          <Button variant="outline" size="sm" onClick={refreshData} className="w-full sm:w-auto">
             <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </Button>
         </div>
       </div>
 
       {/* Dashboard Summary - Today's Performance */}
       {dashboardSummary && (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Transactions d'Aujourd'hui</p>
-                  <p className="text-2xl font-bold text-foreground">{dashboardSummary.today_transactions || 0}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{dashboardSummary.today_transactions || 0}</p>
                 <div className="flex items-center gap-1">
-                    <CheckCircle2 className="h-3 w-3 text-green-500" />
-                    <span className="text-xs text-green-500">{dashboardSummary.today_completed || 0} terminées</span>
+                    <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />
+                    <span className="text-xs text-green-500 truncate">{dashboardSummary.today_completed || 0} terminées</span>
                 </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 text-primary" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 ml-3">
+                  <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Revenus d'Aujourd'hui</p>
-                  <p className="text-2xl font-bold text-foreground">{dashboardSummary.today_revenue?.toLocaleString() || '0'} XOF</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{dashboardSummary.today_revenue?.toLocaleString() || '0'} XOF</p>
                 <div className="flex items-center gap-1">
-                    <TrendingUp className="h-3 w-3 text-green-500" />
-                    <span className="text-xs text-green-500">{dashboardSummary.today_success_rate?.toFixed(1) || '0'}% taux de réussite</span>
+                    <TrendingUp className="h-3 w-3 text-green-500 shrink-0" />
+                    <span className="text-xs text-green-500 truncate">{dashboardSummary.today_success_rate?.toFixed(1) || '0'}% taux de réussite</span>
                 </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-                  <DollarSign className="h-6 w-6 text-green-500" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Appareils en Ligne</p>
-                  <p className="text-2xl font-bold text-foreground">{dashboardSummary.online_devices || 0}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{dashboardSummary.online_devices || 0}</p>
                 <div className="flex items-center gap-1">
-                    <Activity className="h-3 w-3 text-green-500" />
+                    <Activity className="h-3 w-3 text-green-500 shrink-0" />
                     <span className="text-xs text-green-500">Actuellement actifs</span>
                 </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                  <Monitor className="h-6 w-6 text-blue-500" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <Monitor className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Transactions en Attente</p>
-                  <p className="text-2xl font-bold text-foreground">{dashboardSummary.pending_transactions || 0}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{dashboardSummary.pending_transactions || 0}</p>
                 <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3 text-yellow-500" />
+                  <Clock className="h-3 w-3 text-yellow-500 shrink-0" />
                     <span className="text-xs text-yellow-500">En attente de traitement</span>
                 </div>
               </div>
-              <div className="h-12 w-12 rounded-xl bg-yellow-500/10 flex items-center justify-center">
-                  <Timer className="h-6 w-6 text-yellow-500" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-yellow-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <Timer className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
               </div>
             </div>
           </CardContent>
@@ -612,74 +612,74 @@ export default function Dashboard() {
 
       {/* User Statistics */}
       {notificationStats?.user_stats && (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Utilisateurs Totaux</p>
-                  <p className="text-2xl font-bold text-foreground">{notificationStats.user_stats.total_users}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{notificationStats.user_stats.total_users}</p>
                 <div className="flex items-center gap-1">
-                    <Users className="h-3 w-3 text-blue-500" />
+                    <Users className="h-3 w-3 text-blue-500 shrink-0" />
                     <span className="text-xs text-blue-500">Tous les temps</span>
                 </div>
               </div>
-                <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                  <Users className="h-6 w-6 text-blue-500" />
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Utilisateurs Actifs</p>
-                  <p className="text-2xl font-bold text-foreground">{notificationStats.user_stats.active_users}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{notificationStats.user_stats.active_users}</p>
                 <div className="flex items-center gap-1">
-                    <Activity className="h-3 w-3 text-green-500" />
-                    <span className="text-xs text-green-500">{notificationStats.user_stats.users_registered_week} cette semaine</span>
+                    <Activity className="h-3 w-3 text-green-500 shrink-0" />
+                    <span className="text-xs text-green-500 truncate">{notificationStats.user_stats.users_registered_week} cette semaine</span>
                 </div>
               </div>
-                <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-                  <Activity className="h-6 w-6 text-green-500" />
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Utilisateurs Vérifiés</p>
-                  <p className="text-2xl font-bold text-foreground">{notificationStats.user_stats.verified_users}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{notificationStats.user_stats.verified_users}</p>
                 <div className="flex items-center gap-1">
-                    <CheckCircle className="h-3 w-3 text-green-500" />
+                    <CheckCircle className="h-3 w-3 text-green-500 shrink-0" />
                     <span className="text-xs text-green-500">Email vérifié</span>
                 </div>
               </div>
-                <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-                  <Shield className="h-6 w-6 text-green-500" />
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-green-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0 flex-1">
                   <p className="text-sm font-medium text-muted-foreground">Utilisateurs en Attente</p>
-                  <p className="text-2xl font-bold text-foreground">{notificationStats.user_stats.pending_users}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">{notificationStats.user_stats.pending_users}</p>
                 <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3 text-yellow-500" />
+                    <Clock className="h-3 w-3 text-yellow-500 shrink-0" />
                     <span className="text-xs text-yellow-500">En attente de vérification</span>
                 </div>
               </div>
-                <div className="h-12 w-12 rounded-xl bg-yellow-500/10 flex items-center justify-center">
-                  <Clock className="h-6 w-6 text-yellow-500" />
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-yellow-500/10 flex items-center justify-center shrink-0 ml-3">
+                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
               </div>
             </div>
           </CardContent>
@@ -749,40 +749,40 @@ export default function Dashboard() {
       {/* Transaction Overview */}
       {transactionStats && (
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
               <BarChart3 className="h-5 w-5 text-primary" />
               Aperçu des Transactions
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">{transactionStats.success_transactions}</p>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="text-center p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                  <p className="text-xl sm:text-2xl font-bold text-green-600">{transactionStats.success_transactions}</p>
                   <p className="text-sm text-green-600">Réussies</p>
                   </div>
-                <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
-                  <p className="text-2xl font-bold text-red-600">{transactionStats.failed_transactions}</p>
+                <div className="text-center p-3 sm:p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                  <p className="text-xl sm:text-2xl font-bold text-red-600">{transactionStats.failed_transactions}</p>
                   <p className="text-sm text-red-600">Échouées</p>
                 </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex justify-between">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center py-2">
                   <span className="text-sm text-muted-foreground">Montant Total</span>
-                    <span className="font-semibold">{parseFloat(transactionStats.total_amount || '0').toLocaleString()} XOF</span>
+                    <span className="font-semibold text-sm sm:text-base">{parseFloat(transactionStats.total_amount || '0').toLocaleString()} XOF</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center py-2">
                   <span className="text-sm text-muted-foreground">Taux de Réussite</span>
                   <span className="font-semibold text-green-600">{transactionStats.success_rate}%</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center py-2">
                   <span className="text-sm text-muted-foreground">Dépôts</span>
-                    <span className="font-semibold">{parseFloat(transactionStats.deposits_amount || '0').toLocaleString()} XOF</span>
+                    <span className="font-semibold text-sm sm:text-base">{parseFloat(transactionStats.deposits_amount || '0').toLocaleString()} XOF</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center py-2">
                   <span className="text-sm text-muted-foreground">Retraits</span>
-                    <span className="font-semibold">{parseFloat(transactionStats.withdrawals_amount || '0').toLocaleString()} XOF</span>
+                    <span className="font-semibold text-sm sm:text-base">{parseFloat(transactionStats.withdrawals_amount || '0').toLocaleString()} XOF</span>
                 </div>
               </div>
             </div>
@@ -1035,63 +1035,63 @@ export default function Dashboard() {
       )}
 
       {/* Service Status */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-muted-foreground">MoMo Pay</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
                   <span className="text-sm text-green-500">Actif</span>
                 </div>
               </div>
-              <Smartphone className="h-8 w-8 text-green-500" />
+              <Smartphone className="h-7 w-7 sm:h-8 sm:w-8 text-green-500 shrink-0 ml-3" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-muted-foreground">Wave Business</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
                   <span className="text-sm text-green-500">Actif</span>
                 </div>
               </div>
-              <Waves className="h-8 w-8 text-green-500" />
+              <Waves className="h-7 w-7 sm:h-8 sm:w-8 text-green-500 shrink-0 ml-3" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-muted-foreground">Service SMS</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
                   <span className="text-sm text-green-500">Actif</span>
                 </div>
               </div>
-              <MessageSquare className="h-8 w-8 text-green-500" />
+              <MessageSquare className="h-7 w-7 sm:h-8 sm:w-8 text-green-500 shrink-0 ml-3" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-muted-foreground">Service FCM</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
                   <span className="text-sm text-green-500">Actif</span>
                 </div>
               </div>
-              <Bell className="h-8 w-8 text-green-500" />
+              <Bell className="h-7 w-7 sm:h-8 sm:w-8 text-green-500 shrink-0 ml-3" />
             </div>
           </CardContent>
         </Card>

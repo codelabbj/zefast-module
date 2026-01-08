@@ -146,18 +146,18 @@ export function Sidebar() {
           <button
             onClick={() => toggleExpanded(item.name)}
             className={cn(
-              "minimal-nav-item w-full justify-between",
+              "minimal-nav-item w-full justify-between h-11 px-3 rounded-lg touch-manipulation",
               item.current && "minimal-nav-item-active"
             )}
           >
-            <div className="flex items-center gap-3">
-              <item.icon className="h-4 w-4" />
-              <span>{item.name}</span>
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <item.icon className="h-5 w-5 shrink-0" />
+              <span className="truncate font-medium">{item.name}</span>
             </div>
             {isExpanded ? (
-              <ChevronUp className="h-4 w-4" />
+              <ChevronUp className="h-4 w-4 shrink-0" />
             ) : (
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-4 w-4 shrink-0" />
             )}
           </button>
           <div
@@ -166,18 +166,18 @@ export function Sidebar() {
               isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
             )}
           >
-            <div className="pl-7 space-y-1">
+            <div className="pl-8 space-y-1">
               {item.children.map((child: any) => (
                 <Link
                   key={child.href}
                   href={child.href}
                   className={cn(
-                    "minimal-nav-item text-sm",
+                    "minimal-nav-item text-sm h-10 px-3 rounded-lg touch-manipulation font-medium",
                     pathname === child.href && "minimal-nav-item-active"
                   )}
                   onClick={() => setSidebarOpen(false)}
                 >
-                  {child.name}
+                  <span className="truncate">{child.name}</span>
                 </Link>
               ))}
             </div>
@@ -190,52 +190,82 @@ export function Sidebar() {
       <Link
         href={item.href}
         className={cn(
-          "minimal-nav-item",
+          "minimal-nav-item h-11 px-3 rounded-lg touch-manipulation font-medium",
           item.current && "minimal-nav-item-active"
         )}
         onClick={() => setSidebarOpen(false)}
       >
-        <item.icon className="h-4 w-4" />
-        <span>{item.name}</span>
+        <item.icon className="h-5 w-5" />
+        <span className="truncate">{item.name}</span>
       </Link>
     )
   }
 
   return (
     <>
+      {/* Mobile menu button */}
+      <div className="lg:hidden">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="fixed top-4 left-4 z-[60] h-12 w-12 bg-background/95 backdrop-blur-xl shadow-elevated border border-border/50 hover:bg-background hover:shadow-minimal-lg transition-all duration-200 active:scale-95"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Open menu</span>
+        </Button>
+      </div>
+
       {/* Mobile sidebar */}
-      <div className={cn("fixed inset-0 z-50 lg:hidden", sidebarOpen ? "block" : "hidden")}>
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 flex w-80 flex-col bg-background border-r border-border/50 shadow-elevated min-h-0">
-          <div className="flex h-16 items-center justify-between px-6 border-b border-border/50">
+      <div className={cn(
+        "fixed inset-0 z-50 lg:hidden transition-opacity duration-300",
+        sidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      )}>
+        <div
+          className={cn(
+            "fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300",
+            sidebarOpen ? "opacity-100" : "opacity-0"
+          )}
+          onClick={() => setSidebarOpen(false)}
+        />
+        <div className={cn(
+          "fixed inset-y-0 left-0 flex w-80 flex-col bg-background border-r border-border/50 shadow-elevated min-h-0 transform transition-transform duration-300 ease-out",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}>
+          <div className="flex h-16 items-center justify-between px-4 sm:px-6 border-b border-border/50">
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-sm">BP</span>
               </div>
-              <div>
-                <h1 className="text-lg font-semibold text-foreground">Zefast Module</h1>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-lg font-semibold text-foreground truncate">Zefast Module</h1>
                 <p className="text-xs text-muted-foreground">Admin Dashboard</p>
               </div>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)}>
-              <X className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="shrink-0"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <X className="h-5 w-5" />
             </Button>
           </div>
-          
-          <nav className="flex-1 space-y-2 p-4 overflow-y-auto">
+
+          <nav className="flex-1 space-y-1 p-4 overflow-y-auto overscroll-contain">
             {navigationItems.map((item) => (
               <NavItem key={item.name} item={item} />
             ))}
           </nav>
-          
+
           <div className="p-4 border-t border-border/50">
             <Button
               variant="ghost"
-              className="w-full justify-start text-red-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20"
+              className="w-full justify-start text-red-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 h-11"
               onClick={handleLogout}
             >
               <LogOut className="mr-3 h-4 w-4" />
-              {t("nav.logout")}
+              <span className="font-medium">{t("nav.logout")}</span>
             </Button>
           </div>
         </div>
@@ -273,18 +303,6 @@ export function Sidebar() {
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* Mobile menu button */}
-      <div className="lg:hidden">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="fixed top-4 left-4 z-40 bg-background/95 backdrop-blur-xl shadow-elevated border border-border/50" 
-          onClick={() => setSidebarOpen(true)}
-        >
-          <Menu className="h-4 w-4" />
-        </Button>
       </div>
     </>
   )

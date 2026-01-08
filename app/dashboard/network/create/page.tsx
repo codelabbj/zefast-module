@@ -106,23 +106,24 @@ export default function NetworkCreatePage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button 
-            variant="outline" 
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <Button
+            variant="outline"
             onClick={() => router.back()}
-            className="flex items-center gap-2 hover-lift"
+            className="flex items-center gap-2 hover-lift touch-manipulation self-start"
+            size="sm"
           >
             <ArrowLeft className="h-4 w-4" />
-            Retour
+            <span className="hidden sm:inline">Retour</span>
           </Button>
-          <div>
-            <h1 className="text-4xl font-bold text-gradient">
+          <div className="space-y-1">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gradient">
               Créer un réseau
             </h1>
-            <p className="text-muted-foreground mt-2 text-lg">
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground">
               Ajouter une nouvelle configuration de réseau de télécommunication
             </p>
           </div>

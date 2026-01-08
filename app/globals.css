@@ -158,7 +158,7 @@
   
   /* Layout utilities */
   .container-minimal {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-0 sm:px-6 lg:px-8;
   }
   
   .section-spacing {
@@ -214,5 +214,12 @@
   
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
