@@ -152,13 +152,13 @@ export default function EditTransactionPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6 sm:space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <div className="h-6 sm:h-8 w-32 sm:w-48 bg-neutral-200 dark:bg-neutral-800 rounded-lg animate-pulse" />
-            <div className="h-3 sm:h-4 w-48 sm:w-64 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse" />
+            <div className="h-8 w-48 bg-neutral-200 dark:bg-neutral-800 rounded-lg animate-pulse" />
+            <div className="h-4 w-64 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse" />
           </div>
-          <div className="h-5 sm:h-6 w-24 sm:w-32 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse self-start sm:self-auto" />
+          <div className="h-6 w-32 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse" />
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -195,27 +195,16 @@ export default function EditTransactionPage() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <Button
-            variant="outline"
-            onClick={() => router.back()}
-            className="flex items-center gap-2 hover-lift touch-manipulation self-start"
-            size="sm"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">Retour</span>
-          </Button>
-          <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-              Modifier la transaction
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              Mettre à jour les détails de la transaction et consulter les journaux
-            </p>
-          </div>
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+            Modifier la transaction
+          </h1>
+          <p className="text-muted-foreground">
+            Mettre à jour les détails de la transaction et consulter les journaux
+          </p>
         </div>
         
         <div className="flex items-center gap-3">
