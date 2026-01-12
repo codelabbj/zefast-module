@@ -196,8 +196,8 @@ export default function ProfilePage() {
           </p>
         </div>
         {!editing ? (
-          <Button
-            onClick={() => setEditing(true)}
+          <Button 
+            onClick={() => setEditing(true)} 
             variant="outline"
             className="flex items-center gap-2 hover-lift w-full sm:w-auto touch-manipulation"
           >
@@ -207,17 +207,17 @@ export default function ProfilePage() {
           </Button>
         ) : (
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button
-              onClick={() => setEditing(false)}
-              variant="outline"
+            <Button 
+              onClick={() => setEditing(false)} 
+              variant="outline" 
               disabled={loading}
               className="flex items-center gap-2 hover-lift touch-manipulation"
             >
               <X className="h-4 w-4" />
               Annuler
             </Button>
-            <Button
-              onClick={handleSubmit}
+            <Button 
+              onClick={handleSubmit} 
               disabled={loading}
               className="hover-lift touch-manipulation"
             >

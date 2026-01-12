@@ -251,13 +251,13 @@ export function Sidebar() {
               <X className="h-5 w-5" />
             </Button>
           </div>
-
+          
           <nav className="flex-1 space-y-1 p-4 overflow-y-auto overscroll-contain">
             {navigationItems.map((item) => (
               <NavItem key={item.name} item={item} />
             ))}
           </nav>
-
+          
           <div className="p-4 border-t border-border/50">
             <Button
               variant="ghost"

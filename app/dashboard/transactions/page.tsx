@@ -925,7 +925,7 @@ export default function TransactionsPage() {
                           </TableCell>
                           <TableCell>
                             <div className="text-sm">
-                              {transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : "N/A"}
+                              {transaction.created_at ? new Date(transaction.created_at).toLocaleString() : "N/A"}
                             </div>
                           </TableCell>
                           <TableCell>

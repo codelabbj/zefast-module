@@ -388,7 +388,7 @@ export default function UsersPage() {
             Gérer et surveiller les comptes utilisateurs
           </p>
         </div>
-
+        
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
             <Users className="h-4 w-4 text-primary shrink-0" />
@@ -497,7 +497,7 @@ export default function UsersPage() {
           ) : (
             <div className="overflow-x-auto scrollbar-hide">
               <div className="min-w-[900px]">
-                <Table>
+              <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-12">
@@ -637,7 +637,7 @@ export default function UsersPage() {
                 </TableBody>
               </Table>
             </div>
-          </div>
+            </div>
           )}
         </CardContent>
       </Card>
