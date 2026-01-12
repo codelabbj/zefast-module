@@ -731,41 +731,41 @@ export default function TransactionsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Transactions
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Gérer et surveiller toutes les transactions
           </p>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2 px-3 py-2 bg-accent rounded-lg">
-            <CreditCard className="h-4 w-4 text-primary" />
+            <CreditCard className="h-4 w-4 text-primary shrink-0" />
             <span className="text-sm font-medium text-foreground">
               {totalCount.toLocaleString()} transactions
             </span>
           </div>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <Download className="h-4 w-4 mr-2" />
             Exporter
           </Button>
-          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
+          <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="touch-manipulation">
             <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
+            <span className="hidden sm:inline">Actualiser</span>
           </Button>
-          
+
         </div>
       </div>
 
       {/* Filters */}
       <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -773,14 +773,14 @@ export default function TransactionsPage() {
                 placeholder="Rechercher des transactions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-10"
                 variant="minimal"
               />
             </div>
 
             {/* Status Filter */}
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Filtrer par statut" />
               </SelectTrigger>
               <SelectContent>
@@ -794,7 +794,7 @@ export default function TransactionsPage() {
 
             {/* Type Filter */}
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="h-10">
                 <SelectValue placeholder="Filtrer par type" />
               </SelectTrigger>
               <SelectContent>
@@ -807,9 +807,10 @@ export default function TransactionsPage() {
 
             {/* Quick Actions */}
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="touch-manipulation">
                 <Filter className="h-4 w-4 mr-2" />
-                Filtres avancés
+                <span className="hidden sm:inline">Filtres avancés</span>
+                <span className="sm:hidden">Filtres</span>
               </Button>
             </div>
           </div>
@@ -817,25 +818,25 @@ export default function TransactionsPage() {
       </Card>
 
       {/* Transactions List */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <Card className="overflow-hidden">
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <CreditCard className="h-5 w-5 text-primary" />
             Liste des transactions
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 px-4">
               <div className="flex flex-col items-center space-y-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="text-muted-foreground">Chargement des transactions...</span>
+                <span className="text-muted-foreground text-center">Chargement des transactions...</span>
               </div>
             </div>
           ) : error ? (
-            <div className="p-6 text-center">
-              <ErrorDisplay 
-                error={error} 
+            <div className="p-4 sm:p-6 text-center">
+              <ErrorDisplay
+                error={error}
                 onRetry={fetchTransactions}
                 variant="full"
               />
@@ -843,20 +844,21 @@ export default function TransactionsPage() {
           ) : (
             <div className="space-y-0">
               {transactions.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground">
+                <div className="p-4 sm:p-8 text-center text-muted-foreground">
                   <CreditCard className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p className="text-lg font-medium">Aucune transaction trouvée</p>
                   <p className="text-sm">Aucune transaction ne correspond à vos critères de recherche.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <Table>
+                <div className="overflow-x-auto scrollbar-hide">
+                  <div className="min-w-[1200px]">
+                    <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Référence</TableHead>
-                        <TableHead className="w-[100px]">Type</TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:bg-accent/50"
+                        <TableHead className="min-w-[120px]">Référence</TableHead>
+                        <TableHead className="min-w-[100px]">Type</TableHead>
+                        <TableHead
+                          className="min-w-[120px] cursor-pointer hover:bg-accent/50"
                           onClick={() => handleSort("amount")}
                         >
                           <div className="flex items-center gap-2">
@@ -864,9 +866,9 @@ export default function TransactionsPage() {
                             <ArrowUpDown className="h-4 w-4" />
                           </div>
                         </TableHead>
-                        <TableHead>Destinataire</TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:bg-accent/50"
+                        <TableHead className="min-w-[150px]">Destinataire</TableHead>
+                        <TableHead
+                          className="min-w-[120px] cursor-pointer hover:bg-accent/50"
                           onClick={() => handleSort("status")}
                         >
                           <div className="flex items-center gap-2">
@@ -874,9 +876,9 @@ export default function TransactionsPage() {
                             <ArrowUpDown className="h-4 w-4" />
                           </div>
                         </TableHead>
-                        <TableHead>Créé par</TableHead>
-                        <TableHead 
-                          className="cursor-pointer hover:bg-accent/50"
+                        <TableHead className="min-w-[120px]">Créé par</TableHead>
+                        <TableHead
+                          className="min-w-[150px] cursor-pointer hover:bg-accent/50"
                           onClick={() => handleSort("created_at")}
                         >
                           <div className="flex items-center gap-2">
@@ -884,7 +886,7 @@ export default function TransactionsPage() {
                             <ArrowUpDown className="h-4 w-4" />
                           </div>
                         </TableHead>
-                        <TableHead className="w-[50px]">Actions</TableHead>
+                        <TableHead className="min-w-[100px]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -1000,6 +1002,7 @@ export default function TransactionsPage() {
                       ))}
                     </TableBody>
                   </Table>
+                  </div>
                 </div>
               )}
             </div>
@@ -1009,19 +1012,20 @@ export default function TransactionsPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
             Affichage de {((currentPage - 1) * itemsPerPage) + 1} à {Math.min(currentPage * itemsPerPage, totalCount)} sur {totalCount} résultats
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-1 sm:gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
+              className="touch-manipulation"
             >
               <ChevronLeft className="h-4 w-4" />
-              Précédent
+              <span className="hidden sm:inline">Précédent</span>
             </Button>
             <div className="flex items-center gap-1">
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -1032,6 +1036,7 @@ export default function TransactionsPage() {
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCurrentPage(page)}
+                    className="touch-manipulation"
                   >
                     {page}
                   </Button>
@@ -1043,8 +1048,9 @@ export default function TransactionsPage() {
               size="sm"
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
+              className="touch-manipulation"
             >
-              Suivant
+              <span className="hidden sm:inline">Suivant</span>
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
